@@ -9,16 +9,17 @@ class BasicSpider(scrapy.Spider):
 
     def parse(self, response):
         self.log("title: %s" % response.xpath(
-        	'//*[contains(concat(" ", normalize-space(@class)," "), "listing-title")][1]/text()').extract())
+        	'//*[@itemprop="name"][1]/text()').extract())
 
         self.log("price: %s" % response.xpath(
-        	'//*[contains(concat(" ", normalize-space(@class)," "), "listing-price")][1]/text()').re('[.0-9]+'))
+        	'//*[@itemprop="price"][1]/text()').re('[.0-9]+'))
 
         self.log("description: %s" % response.xpath(
-        	'//*[contains(concat(" ", normalize-space(@class)," "), "listing-description")][1]/text()').extract())
+        	'//*[@itemprop="description"][1]/text()').extract())
 
         self.log("address: %s" % response.xpath(
-        	'//*[contains(concat(" ", normalize-space(@class)," "), "listing-location")][1]/text()').extract())
+        	'//*[@itemtype="http://schema.org/'
+        	'Place"][1]/text()').extract())
 
         self.log("image_urls: %s" % response.xpath(
-        	'//*[contains(concat(" ", normalize-space(@class)," "), "listing-link")][1]/text()').extract())
+        	'//*[@itemprop="image"][1]/@src').extract())
